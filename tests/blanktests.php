@@ -9,8 +9,14 @@
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
+    
     class blankTests extends PHPUnit_Framework_TestCase
     {
+
+        protected function tearDown()
+        {
+            Task::deleteAll();
+        }
         function test()
         {
             $test = new Test;
