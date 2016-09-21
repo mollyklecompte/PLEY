@@ -1,4 +1,4 @@
-# _Coin Combinations_
+# _Portland's Best Restaurants_
 
 #### _Another exercise in PHP BDD and Testing_
 
