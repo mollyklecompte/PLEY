@@ -82,7 +82,6 @@
             $output = Cuisine::getAll();
 
             $this->assertEquals([], $output);
-
         }
 
         function test_find()
@@ -100,7 +99,7 @@
             $this->assertEquals($test_cuisine, $output);
         }
 
-        function testGetRestaurants()
+        function test_getRestaurants()
         {
             $cuisine_type = "Wine";
             $id = null;
@@ -113,10 +112,9 @@
             $test_restaurant = new Restaurant($restaurant_name, $id, $test_cuisine_id);
             $test_restaurant->save();
 
-            $restaurant_name2 = "Paley's Place";
+            $restaurant_name2 = "Paleys Place";
             $test_restaurant2 = new Restaurant($restaurant_name2, $id, $test_cuisine_id);
             $test_restaurant2->save();
-
 
             $output = $test_cuisine->getRestaurants();
 

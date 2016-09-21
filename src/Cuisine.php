@@ -76,5 +76,17 @@ class Cuisine
         }
         return $restaurants;
     }
+
+    function findMatch($search)
+    {
+        $cuisines = Cuisine::getAll();
+        $match = "";
+        foreach($cuisines as $cuisine){
+            if($cuisine->cuisine_type == $search) {
+                break;
+            }
+        }
+        return $cuisine;
+    }
 }
 ?>

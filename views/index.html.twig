@@ -6,12 +6,35 @@
 </head>
 <body>
     <div class="container">
-        <form action="/" style="padding-top: 100px" method="post">
+        <form action="/addRestaurant" method="post">
+            <h2>Add a restaurant</h2>
             <div class="form-group">
-                <label for=""></label>
-                <input id="" name="" class="form-control" type="text" placeholder="">
+                <h3>Restaurant Name</h3>
+                <input id="restaurant" name="restaurant_name" class="form-control" type="text">
             </div>
-            <button type="submit" class="btn btn-info">GO!</button>
+            <div class="form-group">
+                <h3>Cuisine</h3>
+                <input id="cuisine" name="cuisine" class="form-control" type="text">
+            </div>
+            <button type="submit" class="btn btn-info">ADD!</button>
+        </form>
+
+        <form action="/search_cuisine" method="post">
+            <h2>Search By Cuisine</h2>
+            <div class="form-group">
+                <h3>Cuisine Name</h3>
+                <input id="cuisine" name="cuisine" class="form-control" type="text">
+            </div>
+            <button type="submit" class="btn btn-info">Search!</button>
+        </form>
+
+        <form action="/search_name" method="post">
+            <h2>Search By Restaurant Name</h2>
+            <div class="form-group">
+                <h3>Restaurant Name</h3>
+                <input id="restaurant_name" name="restaurant_name" class="form-control" type="text">
+            </div>
+            <button type="submit" class="btn btn-info">Search!</button>
         </form>
     </div>
 </body>

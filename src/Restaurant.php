@@ -70,5 +70,17 @@ class Restaurant
         }
         return $searched_restaurant;
     }
+
+    function findMatch($search)
+    {
+        $restaurants = Restaurant::getAll();
+        $match = "";
+        foreach($restaurants as $restaurant){
+            if($restaurant->restaurant_name == $search) {
+                break;
+            }
+        }
+        return $restaurant;
+    }
 }
 ?>
