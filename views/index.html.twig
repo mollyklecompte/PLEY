@@ -2,40 +2,62 @@
 <html>
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css" media="screen" title="no title" charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Slabo+27px" rel="stylesheet">
     <title></title>
 </head>
 <body>
+    <div id="topbar">
+        <h1>PLEY::</h1>
+        <h2>A friendlier guide to Portland's best restaurants</h2>
+        <img src="food2.jpeg">
+    </div>
     <div class="container">
-        <form action="/addRestaurant" method="post">
-            <h2>Add a restaurant</h2>
-            <div class="form-group">
-                <h3>Restaurant Name</h3>
-                <input id="restaurant" name="restaurant_name" class="form-control" type="text">
+        <div class="introduction">
+            <h2>Who needs Yelp? Come PLEY..</h2>
+            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+        </div>
+        <div id="add-cuisine">
+            <h2>Add a Cuisine:</h2>
+            <form action="/cuisines" method="post" id="cuisine-form">
+                <div class="form-group">
+                    <input id="cuisine" name="cuisine" class="form-control" type="text">
+                </div>
+                <button type="submit" class="btn btn-info">ADD!</button>
+            </form>
+            <div id="cuisines">
+                {% if cuisines is not empty %}
+                    {% for cuisine in cuisines %}
+                        <p><a href="/cuisines/{{ cuisine.getId }}">{{ cuisine.getCuisineType }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="form-group">
-                <h3>Cuisine</h3>
-                <input id="cuisine" name="cuisine" class="form-control" type="text">
-            </div>
-            <button type="submit" class="btn btn-info">ADD!</button>
-        </form>
+        </div>
 
-        <form action="/search_cuisine" method="post">
-            <h2>Search By Cuisine</h2>
-            <div class="form-group">
-                <h3>Cuisine Name</h3>
-                <input id="cuisine" name="cuisine" class="form-control" type="text">
-            </div>
-            <button type="submit" class="btn btn-info">Search!</button>
-        </form>
 
-        <form action="/search_name" method="post">
-            <h2>Search By Restaurant Name</h2>
+        <!-- <form action="/add_review" method="post">
+            <h2>Add a review</h2>
             <div class="form-group">
-                <h3>Restaurant Name</h3>
+                <h3>Your Name:</h3>
+                <input id="restaurant_name" name="restaurant_name" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <h3>Rate:</h3>
+                <p>1 star</p>
+                <input name="stars" class="form-control" type="radio" value=1>
+                <p>2 star</p>
+                <input name="stars" class="form-control" type="radio" value=2>
+                <p>3 star</p>
+                <input name="stars" class="form-control" type="radio" value=3>
+                <p>4 star</p>
+                <input name="stars" class="form-control" type="radio" value=4>
+            </div>
+            <div class="form-group">
+                <h3>Your review:</h3>
                 <input id="restaurant_name" name="restaurant_name" class="form-control" type="text">
             </div>
             <button type="submit" class="btn btn-info">Search!</button>
-        </form>
+        </form> -->
     </div>
 </body>
 </html>

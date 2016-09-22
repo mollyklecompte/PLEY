@@ -8,7 +8,7 @@
     $app = new Silex\Application();
 
 //calls database
-    $server = 'mysql:host=localhost;dbname=restaurant_database';
+    $server = 'mysql:host=localhost;dbname=pley_database';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -17,37 +17,82 @@
     $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views'));
 
+    use Symfony\Component\HttpFoundation\Request;
+    Request::enableHttpMethodParameterOverride();
+
     $app->get('/', function() use ($app) {
-        return $app['twig']->render('index.html.twig');
+        return $app['twig']->render('index.html.twig', array('cuisines' => Cuisine::getAll()));
     });
 
-    $app->post('/addRestaurant', function() use ($app) {
-        $restaurant_name = $_POST['restaurant_name'];
-        $id = null;
-        $cuisine_id = $_POST['cuisine'];
-        $new_restaurant = new Restaurant($restaurant_name, $id, $cuisine_id);
-        $new_restaurant->save();
-
-        return $app['twig']->render('restaurants.html.twig', array('restaurant' => $restaurant_name));
+    $app->post('/cuisines', function() use ($app) {
+        $cuisine = new Cuisine($_POST['cuisine']);
+        $cuisine->save();
+        return $app['twig']->render('index.html.twig', array('cuisines' => Cuisine::getAll()));
     });
 
-    $app->post('/search_cuisine', function() use ($app) {
-        $cuisine = $_POST['cuisine'];
-        $new_cuisine = new Cuisine($cuisine, $id = null);
-        $search_cuisine = $new_cuisine->findMatch($cuisine);
-        $matching_restaurants = $search_cuisine->getRestaurants();
-
-        return var_dump($matching_restaurants);
-
-        // return $app['twig']->render('search_cuisine.html.twig', array('cuisine' => $search_cuisine, 'restaurants' => $matching_restaurants));
+    $app->get('/cuisines/{id}', function($id) use ($app) {
+        $cuisine = Cuisine::find($id);
+        return $app['twig']->render('cuisine.html.twig', array('cuisine' => $cuisine, 'restaurants' => $cuisine->getRestaurants()));
     });
 
-    $app->post('/search_name', function() use ($app) {
-        $restaurant = $_POST['restaurant_name'];
-        $new_restaurant = new Restaurant($restaurant, $id = null, $cuisine_id = null);
-        $search_restaurant = $new_restaurant->findMatch($restaurant);
-
-        return $app['twig']->render('search_name.html.twig', array('restaurant' => $search_restaurant));
+    $app->post('/restaurants', function() use ($app) {
+        $restaurant = $_POST['restaurant'];
+        $contact = $_POST['contact'];
+        $cuisine_id = $_POST['cuisine_id'];
+        $restaurant = new Restaurant($restaurant, $id = null, $cuisine_id, $contact);
+        $restaurant->save();
+        $cuisine = Cuisine::find($cuisine_id);
+        return $app['twig']->render('cuisine.html.twig', array('cuisine'=>$cuisine, 'restaurants' => $cuisine->getRestaurants()));
     });
+
+    $app->get('/restaurants/{id}', function($id) use ($app) {
+        $restaurant = Restaurant::find($id);
+
+        return $app['twig']->render('restaurant.html.twig', array('restaurant' => $restaurant));
+    });
+
+
+// PATCH!!!
+    $app->get('/cuisines/{id}/edit', function($id) use ($app) {
+        $cuisine = Cuisine::find($id);
+        return $app['twig']->render('cuisine_edit.html.twig', array('cuisine' => $cuisine));
+    });
+
+    $app->patch('/cuisines/{id}', function($id) use ($app) {
+        $cuisine_type = $_POST['cuisine_type'];
+        $cuisine = Cuisine::find($id);
+        $cuisine->update($cuisine_type);
+        return $app['twig']->render('cuisine.html.twig', array('cuisine'=>$cuisine, 'restaurants'=> $cuisine->getRestaurants()));
+    });
+
+    $app->delete("/cuisines/{id}", function($id) use ($app) {
+        $cuisine = Cuisine::find($id);
+        $cuisine->delete();
+
+        return $app['twig']->render('delete.html.twig', array('cuisines' => Cuisine::getAll()));
+    });
+
+    // restaurant patch
+
+    $app->get('/restaurants/{id}/edit', function($id) use ($app) {
+        $restaurant = Restaurant::find($id);
+        return $app['twig']->render('restaurant_edit.html.twig', array('restaurant' => $restaurant));
+    });
+
+
+    $app->patch('/restaurants/{id}', function($id) use ($app) {
+        $contact = $_POST['contact'];
+        $restaurant = Restaurant::find($id);
+        $contact->update($contact);
+        return $app['twig']->render('restaurant.html.twig', array('cuisine'=>$cuisine, 'restaurants'=> $cuisine->getRestaurants()));
+    });
+
+    $app->delete("/restaurants/{id}", function($id) use ($app) {
+        $restaurant = Restaurant::find($id);
+        $restaurant->delete();
+
+        return $app['twig']->render('delete.html.twig', array('cuisines' => Cuisine::getAll()));
+    });
+
     return $app;
 ?>

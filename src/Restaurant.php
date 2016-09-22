@@ -4,13 +4,14 @@ class Restaurant
     private $restaurant_name;
     private $id;
     private $cuisine_id;
+    private $contact;
 
-
-    function __construct($restaurant_name, $id = null, $cuisine_id)
+    function __construct($restaurant_name, $id = null, $cuisine_id, $contact)
     {
       $this->restaurant_name = $restaurant_name;
       $this->id = $id;
       $this->cuisine_id = $cuisine_id;
+      $this->contact = $contact;
     }
 
     function setRestaurantName($new_restaurant_name)
@@ -33,9 +34,19 @@ class Restaurant
       return $this->cuisine_id;
     }
 
+    function setContact($new_contact)
+    {
+        $this->contact = $new_contact;
+    }
+
+    function getContact()
+    {
+      return $this->contact;
+    }
+
     function save()
     {
-      $GLOBALS['DB']->exec("INSERT INTO restaurants (restaurant_name, cuisine_id) VALUES ('{$this->getRestaurantName()}', {$this->getCuisineId()});");
+      $GLOBALS['DB']->exec("INSERT INTO restaurants (restaurant_name, cuisine_id, contact) VALUES ('{$this->getRestaurantName()}', {$this->getCuisineId()}, '{$this->getContact()}');");
       $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
@@ -47,7 +58,8 @@ class Restaurant
           $id = $restaurant['id'];
           $cuisine_id = $restaurant['cuisine_id'];
           $restaurant_name = $restaurant['restaurant_name'];
-          $new_restaurant = new Restaurant($restaurant_name, $id, $cuisine_id);
+          $contact = $restaurant['contact'];
+          $new_restaurant = new Restaurant($restaurant_name, $id, $cuisine_id, $contact);
           array_push($list_of_restaurants, $new_restaurant);
       }
       return $list_of_restaurants;
@@ -71,16 +83,25 @@ class Restaurant
         return $searched_restaurant;
     }
 
-    function findMatch($search)
+    static function findMatch($search)
     {
         $restaurants = Restaurant::getAll();
-        $match = "";
         foreach($restaurants as $restaurant){
             if($restaurant->restaurant_name == $search) {
-                break;
+                return true;
             }
         }
-        return $restaurant;
+    }
+
+    function update($new_restaurant_contact)
+    {
+        $GLOBALS['DB']->exec("UPDATE restaurants SET contact = '{$new_restaurant_contact}' WHERE id = {$this->getId()}");
+            $this->setContact($new_restaurant_contact);
+    }
+
+    function delete()
+    {
+        $GLOBALS['DB']->exec("DELETE FROM restaurants WHERE id = {$this->getId()};");
     }
 }
 ?>

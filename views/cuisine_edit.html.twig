@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css" media="screen" title="no title" charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Slabo+27px" rel="stylesheet">
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <h1>Update the {{ cuisine.getCuisineType }}</h1>
+        <form action="/cuisines/{{ cuisine.getId }}" method="post">
+            <input name="_method" type="hidden" value="patch">
+            <label for="cuisine_type">Rename Your Cuisine</label>
+            <input id="cuisine_type" name="cuisine_type" type="text">
+            <button type="submit" class="btn btn-info">Update</button>
+        </form>
+
+        <form action="/cuisines/{{ cuisine.getId }}" method="post">
+            <input name="_method" type="hidden" value="delete">
+
+            <button type="submit" class="btn btn-danger">Delete this cuisine</button>
+        </form>
+
+        <p><a href="/">Home</a></p>
+    </div>
+</body>
+</html>

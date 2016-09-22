@@ -65,28 +65,30 @@ class Cuisine
 
     function getRestaurants()
     {
-        $restaurants = array();
+        $restaurants_array = array();
         $returned_restaurants = $GLOBALS['DB']->query("SELECT * FROM restaurants WHERE cuisine_id = {$this->getId()};");
         foreach($returned_restaurants as $restaurant) {
             $restaurant_name = $restaurant['restaurant_name'];
             $id = $restaurant['id'];
             $cuisine_id = $restaurant['cuisine_id'];
-            $new_restaurant = new Restaurant($restaurant_name, $id, $cuisine_id);
-            array_push($restaurants, $new_restaurant);
+            $contact = $restaurant['contact'];
+            $new_restaurant = new Restaurant($restaurant_name, $id, $cuisine_id, $contact);
+            array_push($restaurants_array, $new_restaurant);
         }
-        return $restaurants;
+        return $restaurants_array;
     }
 
-    function findMatch($search)
+    function update($new_cuisine)
     {
-        $cuisines = Cuisine::getAll();
-        $match = "";
-        foreach($cuisines as $cuisine){
-            if($cuisine->cuisine_type == $search) {
-                break;
-            }
-        }
-        return $cuisine;
+        $GLOBALS['DB']->exec("UPDATE cuisines SET cuisine_type = '{$new_cuisine}' WHERE id = {$this->getId()}");
+            $this->setCuisineType($new_cuisine);
     }
+
+    function delete()
+    {
+        $GLOBALS['DB']->exec("DELETE FROM cuisines WHERE id = {$this->getId()};");
+        $GLOBALS['DB']->exec("DELETE FROM restaurants WHERE cuisine_id = {$this->getId()};");
+    }
+
 }
 ?>

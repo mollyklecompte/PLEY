@@ -6,7 +6,7 @@
     require_once "src/Restaurant.php";
     require_once "src/Cuisine.php";
 
-    $server = 'mysql:host=localhost;dbname=restaurant_database_test';
+    $server = 'mysql:host=localhost;dbname=pley_database_test';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -133,5 +133,7 @@
 
             $this->assertEquals($test_restaurant, $output);
         }
+
+
     }
 ?>

@@ -6,7 +6,7 @@
     require_once "src/Restaurant.php";
     require_once "src/Cuisine.php";
 
-    $server = 'mysql:host=localhost;dbname=restaurant_database_test';
+    $server = 'mysql:host=localhost;dbname=pley_database_test';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -44,8 +44,8 @@
         function test_save()
         {
             $cuisine_type = "Wine";
-            $id = null;
-            $test_cuisine = new Cuisine($cuisine_type, $id);
+            // $id = null;
+            $test_cuisine = new Cuisine($cuisine_type);
             $test_cuisine->save();
 
             $output = Cuisine::getAll();
@@ -55,11 +55,11 @@
 
         function test_getAll()
         {
-            $id = null;
+            // $id = null;
             $cuisine_type = "Wine";
             $cuisine_type2 = "Japanese";
-            $test_cuisine = new Cuisine($cuisine_type, $id);
-            $test_cuisine2 = new Cuisine($cuisine_type2, $id);
+            $test_cuisine = new Cuisine($cuisine_type);
+            $test_cuisine2 = new Cuisine($cuisine_type2);
             $test_cuisine->save();
             $test_cuisine2->save();
 
@@ -120,5 +120,20 @@
 
             $this->assertEquals([$test_restaurant, $test_restaurant2], $output);
         }
+
+        function test_update()
+        {
+            $cuisine_type = "Wine";
+            $id = null;
+            $test_cuisine = new Cuisine ($cuisine_type, $id);
+            $test_cuisine->save();
+
+            $new_cuisine = "Italian";
+
+            $test_cuisine->update($new_cuisine);
+
+            $this->assertEquals("Italian", $test_cuisine->getCuisineType());
+        }
+
     }
 ?>
